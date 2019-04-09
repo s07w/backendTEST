@@ -1,17 +1,6 @@
-import React from "react"
-import PropTypes from "prop-types"
-import "./Wrapper.css"
+import React from 'react';
+import "./wrapper-style.css";
 
-export default class Wrapper extends React.Component {
-    render() {
-        const { children } = this.props
+const Wrapper = props => <div className="wrapper">{props.children}</div>;
 
-        return (
-            <main className="wrapper">{children}</main>
-        )
-    }
-}
-
-Wrapper.props = {
-    children: PropTypes.node
-}
+export default Wrapper;

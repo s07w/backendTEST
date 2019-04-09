@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./SignUp.css";
 import './Images/Background.jpg';
+import Axios from "axios";
 
 class SignUp extends Component {
     // Setting the component's initial state
@@ -27,6 +28,25 @@ class SignUp extends Component {
     handleFormSubmit = event => {
       // Preventing the default behavior of the form submit (which is to refresh the page)
       event.preventDefault();
+      console.log('sign-up-form, username: ');
+      console.log(this.state.username);
+      Axios.post('/user/', {
+        username: this.state.username,
+        password: this.state.password,
+      }).then(response => {
+        if (response.data.error) {
+          console.log('username already taken');
+        } else {
+          console.log('success');
+          this.setState({
+            redirectTo: '/home'
+          });
+        }
+      }).catch(error => {
+        console.log('sign up error...');
+        console.log(error);
+      });
+      
       if (!this.state.username || !this.state.email) {
         alert("Create a username and enter your email address please!");
       } else if (this.state.password.length < 7) {

@@ -1,29 +1,53 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
-
-    username:{
+    username: {
         type: String,
-        require: true,
-        description: 'Username'
+        unique: false,
+        required: false,
     },
-    email:{
+    password: {
         type: String,
-        required: true,
-        match: [/.+@\..+/, "Please enter valid email address."],
-        description: "User Email"
+        unique: false,
+        required: false,
     },
-    password:{
-        type: String,
-        require: true
-    },
-    userCreated: {
-        type: Date,
-        default: Date.now
-    }
+    comments: [
+        {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+        }
+    ],
+    maintenance_comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'MaintenanceComment'
+        }
+    ]
 
 });
-const User = mongoose.model("User", userSchema);
 
+userSchema.methods = {
+    checkPassword: function (inputPass) {
+        return bcrypt.compareSync(inputPass, this.password);
+    },
+    hashPassword: userPassword => {
+        return bcrypt.hashSync(userPassword, 10);
+    }
+}
+
+userSchema.pre('save', function (next) {
+	if (!this.password) {
+		console.log('models/user.js =======NO PASSWORD PROVIDED=======');
+		next();
+	} else {
+		console.log('models/user.js hashPassword in pre save');
+		
+		this.password = this.hashPassword(this.password);
+		next();
+	}
+});
+
+const User = mongoose.model('User', userSchema);
 module.exports = User;

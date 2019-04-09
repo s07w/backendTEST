@@ -1,4 +1,17 @@
 .wrapper {
-    min-height: 100vh;
-    padding-bottom: 100px;
+    margin-bottom: 0;
+    background: #ECEFF1;
+    height: 88%;
+    max-height: auto;
+    display: flex;
+    background-image: url("./88246.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: center;
+    background-size: cover;
+    overflow:  auto;
+    position: relative;
 }
